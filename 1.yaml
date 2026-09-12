@@ -1,124 +1,189 @@
 blueprint:
-  name: ZHA - Tuya 3-Button Scene Switch
-  description: Automate your Tuya 3-Button Scene Switch (TS0043) via ZHA.
+  name: ZHA - Tuya TS0046 6 button remote
+  description: Automate your Tuya TS0046 6 button remote using ZHA events.
   domain: automation
   input:
-    switch:
-      name: Tuya Zigbee Switch
-      description: Tuya 3-Button Scene Switch to use
+    tuya_ts0046:
+      name: Tuya TS0046 6 button remote
+      description: Tuya TS0046 6 button remote to use
       selector:
         device:
           integration: zha
+          manufacturer: _TZ3000_sj7jbgks
           model: TS0043
-    single_press_1:
-      name: Single Press - Button 1
-      description: Action to run on button 1 (top) single press
+          multiple: false
+    button_one_single_press:
+      name: Button 1 (single press)
+      description: Action to run on button 1 single press
       default: []
       selector:
         action: {}
-    long_press_1:
-      name: Hold - Button 1
-      description: Action to run on button 1 (top) long press
+    button_one_double_press:
+      name: Button 1 (double press)
+      description: Action to run on button 1 double press
       default: []
       selector:
         action: {}
-    double_press_1:
-      name: Double Press - Button 1
-      description: Action to run on button 1 (top) double press
+    button_one_long_press:
+      name: Button 1 (long press)
+      description: Action to run on button 1 long press
       default: []
       selector:
         action: {}
-    single_press_2:
-      name: Single Press - Button 2
-      description: Action to run on button 2 (middle) single press
+    button_two_single_press:
+      name: Button 2 (single press)
+      description: Action to run on button 2 single press
       default: []
       selector:
         action: {}
-    long_press_2:
-      name: Hold - Button 2
-      description: Action to run on button 2 (middle) long press
+    button_two_double_press:
+      name: Button 2 (double press)
+      description: Action to run on button 2 double press
       default: []
       selector:
         action: {}
-    double_press_2:
-      name: Double Press - Button 2
-      description: Action to run on button 2 (middle) double press
+    button_two_long_press:
+      name: Button 2 (long press)
+      description: Action to run on button 2 long press
       default: []
       selector:
         action: {}
-    single_press_3:
-      name: Single Press - Button 3
-      description: Action to run on button 3 (bottom) single press
+    button_three_single_press:
+      name: Button 3 (single press)
+      description: Action to run on button 3 single press
       default: []
       selector:
         action: {}
-    long_press_3:
-      name: Hold - Button 3
-      description: Action to run on button 3 (bottom) long press
+    button_three_double_press:
+      name: Button 3 (double press)
+      description: Action to run on button 3 double press
       default: []
       selector:
         action: {}
-    double_press_3:
-      name: Double Press - Button 3
-      description: Action to run on button 3 (bottom) double press
+    button_three_long_press:
+      name: Button 3 (long press)
+      description: Action to run on button 3 long press
       default: []
       selector:
         action: {}
-mode: parallel
+    button_four_single_press:
+      name: Button 4 (single press)
+      description: Action to run on button 4 single press
+      default: []
+      selector:
+        action: {}
+    button_four_double_press:
+      name: Button 4 (double press)
+      description: Action to run on button 4 double press
+      default: []
+      selector:
+        action: {}
+    button_four_long_press:
+      name: Button 4 (long press)
+      description: Action to run on button 4 long press
+      default: []
+      selector:
+        action: {}
+    button_five_single_press:
+      name: Button 5 (single press)
+      description: Action to run on button 5 single press
+      default: []
+      selector:
+        action: {}
+    button_five_double_press:
+      name: Button 5 (double press)
+      description: Action to run on button 5 double press
+      default: []
+      selector:
+        action: {}
+    button_five_long_press:
+      name: Button 5 (long press)
+      description: Action to run on button 5 long press
+      default: []
+      selector:
+        action: {}
+    button_six_single_press:
+      name: Button 6 (single press)
+      description: Action to run on button 6 single press
+      default: []
+      selector:
+        action: {}
+    button_six_double_press:
+      name: Button 6 (double press)
+      description: Action to run on button 6 double press
+      default: []
+      selector:
+        action: {}
+    button_six_long_press:
+      name: Button 6 (long press)
+      description: Action to run on button 6 long press
+      default: []
+      selector:
+        action: {}
+  source_url: https://community.home-assistant.io/t/zha-tuya-ts0043-3-button-remote/260589
+mode: restart
 max_exceeded: silent
 trigger:
 - platform: event
   event_type: zha_event
   event_data:
-    device_id: !input switch
+    device_id: !input tuya_ts0046
 action:
 - variables:
     command: '{{ trigger.event.data.command }}'
-    cluster_id: '{{ trigger.event.data.cluster_id }}'
     endpoint_id: '{{ trigger.event.data.endpoint_id }}'
 - choose:
   - conditions:
-    - '{{ command == ''remote_button_short_press'' }}'
-    - '{{ cluster_id == 6 }}'
-    - '{{ endpoint_id == 1 }}'
-    sequence: !input single_press_1
+    - '{{ command == ''remote_button_short_press'' and endpoint_id == 1 }}'
+    sequence: !input button_one_single_press
   - conditions:
-    - '{{ command == ''remote_button_short_press'' }}'
-    - '{{ cluster_id == 6 }}'
-    - '{{ endpoint_id == 2 }}'
-    sequence: !input single_press_2
+    - '{{ command == ''remote_button_double_press'' and endpoint_id == 1 }}'
+    sequence: !input button_one_double_press
   - conditions:
-    - '{{ command == ''remote_button_short_press'' }}'
-    - '{{ cluster_id == 6 }}'
-    - '{{ endpoint_id == 3 }}'
-    sequence: !input single_press_3
+    - '{{ command == ''remote_button_long_press'' and endpoint_id == 1 }}'
+    sequence: !input button_one_long_press
   - conditions:
-    - '{{ command == ''remote_button_double_press'' }}'
-    - '{{ cluster_id == 6 }}'
-    - '{{ endpoint_id == 1 }}'
-    sequence: !input double_press_1
+    - '{{ command == ''remote_button_short_press'' and endpoint_id == 2 }}'
+    sequence: !input button_two_single_press
   - conditions:
-    - '{{ command == ''remote_button_double_press'' }}'
-    - '{{ cluster_id == 6 }}'
-    - '{{ endpoint_id == 2 }}'
-    sequence: !input double_press_2
+    - '{{ command == ''remote_button_double_press'' and endpoint_id == 2 }}'
+    sequence: !input button_two_double_press
   - conditions:
-    - '{{ command == ''remote_button_double_press'' }}'
-    - '{{ cluster_id == 6 }}'
-    - '{{ endpoint_id == 3 }}'
-    sequence: !input double_press_3
+    - '{{ command == ''remote_button_long_press'' and endpoint_id == 2 }}'
+    sequence: !input button_two_long_press
   - conditions:
-    - '{{ command == ''remote_button_long_press'' }}'
-    - '{{ cluster_id == 6 }}'
-    - '{{ endpoint_id == 1 }}'
-    sequence: !input long_press_1
+    - '{{ command == ''remote_button_short_press'' and endpoint_id == 3 }}'
+    sequence: !input button_three_single_press
   - conditions:
-    - '{{ command == ''remote_button_long_press'' }}'
-    - '{{ cluster_id == 6 }}'
-    - '{{ endpoint_id == 2 }}'
-    sequence: !input long_press_2
+    - '{{ command == ''remote_button_double_press'' and endpoint_id == 3 }}'
+    sequence: !input button_three_double_press
   - conditions:
-    - '{{ command == ''remote_button_long_press'' }}'
-    - '{{ cluster_id == 6 }}'
-    - '{{ endpoint_id == 3 }}'
-    sequence: !input long_press_3
+    - '{{ command == ''remote_button_long_press'' and endpoint_id == 3 }}'
+    sequence: !input button_three_long_press
+  - conditions:
+    - '{{ command == ''remote_button_short_press'' and endpoint_id == 4 }}'
+    sequence: !input button_four_single_press
+  - conditions:
+    - '{{ command == ''remote_button_double_press'' and endpoint_id == 4 }}'
+    sequence: !input button_four_double_press
+  - conditions:
+    - '{{ command == ''remote_button_long_press'' and endpoint_id == 4 }}'
+    sequence: !input button_four_long_press
+  - conditions:
+    - '{{ command == ''remote_button_short_press'' and endpoint_id == 5 }}'
+    sequence: !input button_five_single_press
+  - conditions:
+    - '{{ command == ''remote_button_double_press'' and endpoint_id == 5 }}'
+    sequence: !input button_five_double_press
+  - conditions:
+    - '{{ command == ''remote_button_long_press'' and endpoint_id == 5 }}'
+    sequence: !input button_five_long_press
+  - conditions:
+    - '{{ command == ''remote_button_short_press'' and endpoint_id == 6 }}'
+    sequence: !input button_six_single_press
+  - conditions:
+    - '{{ command == ''remote_button_double_press'' and endpoint_id == 6 }}'
+    sequence: !input button_six_double_press
+  - conditions:
+    - '{{ command == ''remote_button_long_press'' and endpoint_id == 6 }}'
+    sequence: !input button_six_long_press```
